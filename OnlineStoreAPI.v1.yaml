@@ -1,0 +1,406 @@
+openapi: 3.0.0
+info:
+  title: OnlineStoreAPI
+  version: '1.0'
+  description: ''
+servers:
+  - url: 'http://localhost:3000'
+paths:
+  /Login:
+    parameters: []
+    post:
+      summary: ''
+      operationId: post-Login
+      responses:
+        '200':
+          description: OK
+        '201':
+          description: Created
+        '406':
+          description: Not Acceptable
+      description: Post a login
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '#/components/schemas/LoginUserInfo'
+            examples:
+              example-1:
+                value:
+                  - username: kalle444
+                    password: jkap44Zz
+  Create user:
+    post:
+      summary: ''
+      operationId: post-CreateUser
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  UserId:
+                    type: number
+              examples:
+                example-1:
+                  value:
+                    UserId: 2257365
+            application/xml:
+              schema:
+                type: object
+                properties: {}
+        '201':
+          description: Created
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+      description: Creates the user account
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '#/components/schemas/UserInfo'
+            examples:
+              example-1:
+                value:
+                  - id: 22543
+                    username: kalle444
+                    firstName: Kalle
+                    lastname: Ojala
+                    email: kalle.ojala@hotmail.fi
+                    phoneNumber: '0447265552'
+                    password: jkap44Zz
+                    Address:
+                      Street: Pesätie 11
+                      City: Oulu
+                      country: Suomi
+                      postalCode: '90420'
+        description: ''
+    parameters: []
+  Post items:
+    post:
+      summary: ''
+      operationId: post-CreateItemSell
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ItemsInfo'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+      description: Post items to sell.
+    parameters: []
+  Modify post items:
+    get:
+      summary: Your GET endpoint
+      tags: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ItemsInfo'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+      operationId: get-Modify-PostItems
+      description: Modify the post items.
+    parameters: []
+  /Delete post items:
+    delete:
+      summary: ''
+      operationId: delete-Delete-post-items
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ItemsInfo'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+      description: Delete posted items.
+  Search items:
+    get:
+      summary: Your GET endpoint
+      tags: []
+      responses:
+        '200':
+          description: OK
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+      operationId: get-See-items
+      description: 'Search items based on Category, Location and Date of posting.'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '#/components/schemas/ItemsInfo'
+            examples:
+              example-1:
+                value:
+                  - Category:
+                      Cars: string
+                      Motorbikes: string
+                      Bikes: string
+                      Clothing: string
+                      Electronics: string
+                      Furnitures: string
+                    Location:
+                      Street: string
+                      Country: string
+                      Postalcode: string
+                      City: string
+                    Images: string
+                    AskingPrice: string
+                    DateOfPosting: string
+                    DeliveryType:
+                      Pickup: string
+                      Shipping: string
+                    SellersInfo:
+                      SellersName: string
+                      PhoneNumber: string
+                      Email: string
+    parameters: []
+components:
+  schemas:
+    UserInfo:
+      title: userInfo
+      type: object
+      x-examples:
+        example:
+          id: 0
+          Username: Kujala123
+          BirthDate: 4.6.1967
+          Address:
+            Street: Isokatu 11
+            City: Oulu
+            Country: Suomi
+            Postalcode: '90100'
+          Email: teppo.kujala@hotmail.fi
+          Password: Jepulisjeah0491890
+      description: User info for create user.
+      properties:
+        id:
+          type: number
+        username:
+          type: string
+        firstName:
+          type: string
+        lastname:
+          type: string
+        email:
+          type: string
+        phoneNumber:
+          type: string
+        password:
+          type: string
+        Address:
+          type: object
+          properties:
+            Street:
+              type: string
+            City:
+              type: string
+            country:
+              type: string
+            postalCode:
+              type: string
+    ErrorMessage:
+      title: ErrorMessage
+      type: object
+      x-examples:
+        example-1:
+          Message: Error occured
+      description: Error message during runtime.
+      properties:
+        errorMessage:
+          type: string
+    ItemsInfo:
+      type: object
+      title: ItemsInfo
+      x-examples:
+        example-1:
+          Title: OnlineStore 2020
+          Description: Welcome to the online store
+          Category:
+            Cars: 'Audi, BMW, Chevrolet, Kia'
+            Motorbikes: 'KTM, Yamaha, Kawasaki'
+            Bikes: 'Kids bikes, Adult bikes'
+            Clothing: 'Shirts, T-shirts, Jeans, Underwear, Socks, Shoes, Jackets'
+            Electronics: 'TV, Game consoles, Stereos, Coffeemakers'
+            Furnitures: 'Sofas, Carpets, Tables, Chairs'
+          Location:
+            Street: Isokatu 11
+            Country: Suomi
+            Postalcode: '90100'
+            City: Oulu
+          Images: MAX 4
+          AskingPrice: '1700'
+          DateOfPosting: 1.10.2020
+          DeliveryType:
+            Pickup: string
+            Shipping: string
+          SellersInfo:
+            SellersName: Teppo Kujala
+            PhoneNumber: '05072355569'
+            Email: teppo.kujala@hotmail.fi
+      description: Information of items that are in Onlinestore.
+      properties:
+        title:
+          type: string
+        description:
+          type: string
+        category:
+          type: object
+          properties:
+            cars:
+              type: string
+            motorbikes:
+              type: string
+            bikes:
+              type: string
+            clothing:
+              type: string
+            electronics:
+              type: string
+            furnitures:
+              type: string
+        location:
+          type: object
+          properties:
+            street:
+              type: string
+            country:
+              type: string
+            postalcode:
+              type: string
+            city:
+              type: string
+        images:
+          type: string
+          maxLength: 4
+        askingPrice:
+          type: string
+        dateOfPosting:
+          type: string
+        deliveryType:
+          type: object
+          properties:
+            pickup:
+              type: string
+            shipping:
+              type: string
+        sellersInfo:
+          type: object
+          properties:
+            sellersName:
+              type: string
+            phoneNumber:
+              type: string
+            email:
+              type: string
+    SearchedItems:
+      title: SearchedItems
+      type: object
+      description: Items to search
+      properties:
+        category:
+          type: object
+          properties:
+            cars:
+              type: string
+            motorbikes:
+              type: string
+            bikes:
+              type: string
+            clothing:
+              type: string
+            electronics:
+              type: string
+            furnitures:
+              type: string
+        location:
+          type: object
+          properties:
+            street:
+              type: string
+            country:
+              type: string
+            postalcode:
+              type: string
+            city:
+              type: string
+        dateOfPosting:
+          type: string
+      x-examples:
+        example-1:
+          category:
+            cars: Audi A4
+            motorbikes: KAWASAKI Zephyr
+            bikes: Adul bike
+            clothing: Shirts
+            electronics: TV
+            furnitures: Sofa
+          location:
+            street: Isokatu 9
+            country: Suomi
+            postalcode: '90100'
+            city: Oulu
+          dateOfPosting: 1.10.2020
+    LoginUserInfo:
+      title: LoginUser
+      type: object
+      description: Info for login
+      properties:
+        username:
+          type: string
+        password:
+          type: string

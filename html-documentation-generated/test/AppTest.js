@@ -8,7 +8,7 @@ describe('restAPI',function() {
     });
 
 
-    it('It shoulf GET all tasks', (done) =>{
+    it('It should GET all tasks', (done) =>{        //This doesn´t work properly
         mocha.request(server)
         .get('../views/index.html')
         .end((err, response) => {
